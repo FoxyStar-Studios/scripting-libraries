@@ -19,7 +19,12 @@ async function build(pkgName: string) {
 
     await dnt.emptyDir(outDir);
     await dnt.build({
-        package: pkg,
+        package: {
+            ...pkg,
+            publishConfig: {
+                access: "public"
+            }
+        },
         entryPoints: [
             path.join(root, "src/index.ts")
         ],

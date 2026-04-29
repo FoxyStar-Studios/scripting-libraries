@@ -1,0 +1,48 @@
+name: Publish Packages
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+
+      - name: Build Packages
+        run: deno task build
+
+      # Publish to NPM
+      - name: Publish to npm
+        run: |
+          for dir in build/*; do
+            cd $dir
+            npm publish || true
+            cd -
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Publish to GitHub Packages
+      - name: Publish to GitHub Packages
+        run: |
+          for dir in build/*; do
+            cd $dir
+            npm publish --registry=https://npm.pkg.github.com || true
+            cd -
+          done
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
