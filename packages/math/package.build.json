@@ -6,16 +6,19 @@
 
     "type": "module",
     "license": "MIT",
+    "author": {
+        "name": "FoxyStar Studios",
+        "url": "https://github.com/FoxyStar-Studios"
+    },
+
     "repository": {
         "type": "git",
         "url": "https://github.com/FoxyStar-Studios/scripting-libraries.git",
         "directory": "packages/math"
     },
-    "readme": "README.md",
-
-    "author": {
-        "name": "FoxyStar Studios",
-        "url": "https://github.com/FoxyStar-Studios"
+    "homepage": "https://www.npmjs.com/package/@foxystar/math",
+    "bugs": {
+        "url": "https://github.com/FoxyStar-Studios/scripting-libraries/issues"
     },
 
     "dependencies": {
