@@ -44,6 +44,13 @@ jobs:
             cd -
           done
 
+      - name: Rewrite package name for GitHub
+        run: |
+          for dir in build/*; do
+            jq '.name |= sub("@foxystar/"; "@foxystar-studios/")' "$dir/package.json" > "$dir/package.tmp.json"
+            mv "$dir/package.tmp.json" "$dir/package.json"
+          done
+
       # Publish to GitHub Packages
       - name: Publish to GitHub Packages
         run: |
