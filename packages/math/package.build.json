@@ -8,7 +8,7 @@
     "license": "MIT",
     "repository": {
         "type": "git",
-        "url": "https://github.com/FoxyStar-Studios/scripting-libraries",
+        "url": "https://github.com/FoxyStar-Studios/scripting-libraries.git",
         "directory": "packages/math"
     },
     "readme": "README.md",

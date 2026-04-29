@@ -27,6 +27,14 @@ jobs:
       - name: Build Packages
         run: deno task build
 
+      - name: Setup npm auth
+        run: |
+          echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+          echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" > ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       # Publish to NPM
       - name: Publish to npm
         run: |
@@ -35,8 +43,6 @@ jobs:
             npm publish || true
             cd -
           done
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # Publish to GitHub Packages
       - name: Publish to GitHub Packages
@@ -46,5 +52,3 @@ jobs:
             npm publish --registry=https://npm.pkg.github.com || true
             cd -
           done
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
