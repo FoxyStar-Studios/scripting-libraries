@@ -1,0 +1,29 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "name": "@foxystar/math",
+    "description": "Hello, world!",
+    "version": "0.1.0",
+
+    "type": "module",
+    "license": "MIT",
+    "repository": {
+        "url": "https://github.com/FoxyStar-Studios/scripting-libraries",
+        "directory": "packages/math"
+    },
+    "readme": "README.md",
+
+    "author": {
+        "name": "FoxyStar Studios",
+        "url": "https://github.com/FoxyStar-Studios"
+    },
+
+    "dependencies": {
+        "@minecraft/server": "*"
+    },
+    "mappings": {
+        "@minecraft/server": {
+            "name": "@minecraft/server",
+            "version": "*"
+        }
+    }
+}

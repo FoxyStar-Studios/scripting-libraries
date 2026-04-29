@@ -1,0 +1,2 @@
+## `@foxystar/core`
+Hello, world!

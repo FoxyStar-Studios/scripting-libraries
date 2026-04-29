@@ -1,0 +1,99 @@
+import { Vector2, Vector3 } from "@minecraft/server";
+
+import { MathUtils } from "../Math.ts";
+import { SimpleRandom } from "../random/SimpleRandom.ts";
+
+const PERMUTATION = [
+    151,160,137,91,90,15,131,13,201,95,96,53,194,233,7,225,
+    140,36,103,30,69,142,8,99,37,240,21,10,23,190,6,148,
+    247,120,234,75,0,26,197,62,94,252,219,203,117,35,11,32,
+    57,177,33,88,237,149,56,87,174,20,125,136,171,168,68,175,
+    74,165,71,134,139,48,27,166,77,146,158,231,83,111,229,122,
+    60,211,133,230,220,105,92,41,55,46,245,40,244,102,143,54,
+    65,25,63,161,1,216,80,73,209,76,132,187,208,89,18,169,
+    200,196,135,130,116,188,159,86,164,100,109,198,173,186,3,64,
+    52,217,226,250,124,123,5,202,38,147,118,126,255,82,85,212,
+    207,206,59,227,47,16,58,17,182,189,28,42,223,183,170,213,
+    119,248,152,2,44,154,163,70,221,153,101,155,167,43,172,9,
+    129,22,39,253,19,98,108,110,79,113,224,232,178,185,112,104,
+    218,246,97,228,251,34,242,193,238,210,144,12,191,179,162,241,
+    81,51,145,235,249,14,239,107,49,192,214,31,181,199,106,157,
+    184,84,204,176,115,121,50,45,127,4,150,254,138,236,205,93,
+    222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
+];
+
+export class Perlin {
+    private perm: number[] = [];
+
+    constructor(seed: number | bigint = 12345) {
+        this.setSeed(seed);
+    }
+
+    static fade(t: number) {
+        return t * t * t * (t * (t * 6 - 15) + 10);
+    }
+
+    static grad(hash: number, x: number, y: number, z: number) {
+        const h = hash & 15,
+              u = (h < 8 ? x : y),
+              v = h < 4 ? y : (h === 12 || h === 14 ? x : z);
+
+        return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v);
+    }
+
+    setSeed(seed: number | bigint) {
+        const rng = new SimpleRandom(BigInt(seed));
+
+        const p = PERMUTATION.slice();
+
+        for (let i = p.length - 1; i > 0; i--) {
+            const j = rng.nextInt(i + 1);
+
+            [p[i], p[j]] = [p[j], p[i]];
+        }
+
+        this.perm = [ ...p, ...p ];
+    };
+
+    noise(vec: Vector3 | Vector2) {
+        const vector = "z" in vec ? vec : { ...vec, z: 0 };
+
+        const X = Math.floor(vector.x) & 255;
+        const Y = Math.floor(vector.y) & 255;
+        const Z = Math.floor(vector.z) & 255;
+
+        vector.x -= Math.floor(vector.x);
+        vector.y -= Math.floor(vector.y);
+        vector.z -= Math.floor(vector.z);
+
+        const u = Perlin.fade(vector.x);
+        const v = Perlin.fade(vector.y);
+        const w = Perlin.fade(vector.z);
+
+        const A = this.perm[X] + Y;
+        const B = this.perm[X + 1] + Y;
+
+        return MathUtils.lerp(w,
+            MathUtils.lerp(v,
+                MathUtils.lerp(u,
+                    Perlin.grad(this.perm[A] + Z, vector.x, vector.y, vector.z),
+                    Perlin.grad(this.perm[B] + Z, vector.x - 1, vector.y, vector.z)
+                ),
+                MathUtils.lerp(u,
+                    Perlin.grad(this.perm[A + 1] + Z, vector.x, vector.y - 1, vector.z),
+                    Perlin.grad(this.perm[B + 1] + Z, vector.x - 1, vector.y - 1, vector.z)
+                )
+            ),
+            MathUtils.lerp(v,
+                MathUtils.lerp(u,
+                    Perlin.grad(this.perm[A] + Z + 1, vector.x, vector.y, vector.z - 1),
+                    Perlin.grad(this.perm[B] + Z + 1, vector.x - 1, vector.y, vector.z - 1)
+                ),
+                MathUtils.lerp(u,
+                    Perlin.grad(this.perm[A + 1] + Z + 1, vector.x, vector.y - 1, vector.z - 1),
+                    Perlin.grad(this.perm[B + 1] + Z + 1, vector.x - 1, vector.y - 1, vector.z - 1)
+                )
+            )
+        );
+    };
+};

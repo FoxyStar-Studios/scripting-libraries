@@ -1,0 +1,19 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "name": "@foxystar/core",
+    "description": "Hello, world!",
+    "version": "0.1.0",
+
+    "type": "module",
+    "license": "MIT",
+    "repository": {
+        "url": "https://github.com/FoxyStar-Studios/scripting-libraries",
+        "directory": "packages/core"
+    },
+    "readme": "README.md",
+
+    "author": {
+        "name": "FoxyStar Studios",
+        "url": "https://github.com/FoxyStar-Studios"
+    }
+}

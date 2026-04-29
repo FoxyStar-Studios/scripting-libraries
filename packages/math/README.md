@@ -1,0 +1,2 @@
+## `@foxystar/math`
+Hello, world!

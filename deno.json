@@ -1,0 +1,20 @@
+{
+    "license": "MIT",
+    "tasks": {
+        "build": "deno run -A scripts/build.ts",
+
+        "build:core": "deno run -A scripts/build.ts core",
+        "build:math": "deno run -A scripts/build.ts math"
+    },
+
+    "imports": {
+        "@foxystar/core": "./packages/core/src/index.ts",
+        "@foxystar/math": "./packages/math/src/index.ts",
+        "@minecraft/server": "npm:@minecraft/server@^2.6.0",
+
+        "dnt": "https://deno.land/x/dnt@0.40.0/mod.ts",
+
+        "@std/path": "jsr:@std/path",
+        "@std/fs": "jsr:@std/fs"
+    }
+}
