@@ -11,6 +11,7 @@
         "@foxystar/core": "./packages/core/src/index.ts",
         "@foxystar/math": "./packages/math/src/index.ts",
         "@foxystar/events": "./packages/events/src/index.ts",
+        "@foxystar/patches": "./packages/patches/src/index.ts",
 
         "dnt": "https://deno.land/x/dnt@0.40.0/mod.ts",
 

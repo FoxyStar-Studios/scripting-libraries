@@ -1,0 +1,23 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "name": "@foxystar/patches",
+    "description": "Hello, world!",
+    "version": "0.1.0",
+
+    "type": "module",
+    "license": "MIT",
+    "author": {
+        "name": "FoxyStar Studios",
+        "url": "https://github.com/FoxyStar-Studios"
+    },
+
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/FoxyStar-Studios/scripting-libraries.git",
+        "directory": "packages/patches"
+    },
+    "homepage": "https://www.npmjs.com/package/@foxystar/patches",
+    "bugs": {
+        "url": "https://github.com/FoxyStar-Studios/scripting-libraries/issues"
+    }
+}
