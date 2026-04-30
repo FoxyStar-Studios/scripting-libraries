@@ -8,9 +8,9 @@ import type {
     SetterEntry
 } from "../types/patch.ts";
 import type { RuntimeFn } from "../types/override.ts";
-import type { Constructor } from "../decorators/Patch.ts";
+import type { PrototypeTarget } from "../decorators/Patch.ts";
 
-export function applyPatches(nativeClass: Constructor): void {
+export function applyPatches(nativeClass: PrototypeTarget): void {
     const patches = getMetadata<PatchEntry[]>(PATCHES_KEY, nativeClass) ?? [];
 
     // Aggregate all entries by their target native key.

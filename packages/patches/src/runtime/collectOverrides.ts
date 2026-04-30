@@ -1,9 +1,9 @@
 import { getMetadata } from "../metadata/metadata.ts";
 import { METHOD_META_KEY, OVERRIDE_KEY } from "../symbols.ts";
 import type { OverrideEntry } from "../types/patch.ts";
-import type { Constructor } from "../decorators/Patch.ts";
+import type { AbstractConstructor } from "../decorators/Patch.ts";
 
-export function collectOverrides(patchClass: Constructor, metadata?: object): OverrideEntry[] {
+export function collectOverrides(patchClass: AbstractConstructor, metadata?: object): OverrideEntry[] {
     if (metadata) {
         const entries = getMetadata<OverrideEntry[]>(OVERRIDE_KEY, metadata);
         if (entries?.length) {

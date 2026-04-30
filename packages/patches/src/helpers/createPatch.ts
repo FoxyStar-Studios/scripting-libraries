@@ -1,9 +1,10 @@
-import { Patch, Constructor } from "../decorators/Patch.ts";
+import { Patch, AbstractConstructor, PrototypeTarget } from "../decorators/Patch.ts";
 import { Override } from "../decorators/Override.ts";
 import type { OverrideOptions } from "../types/override.ts";
 
-export function createPatch<T extends Constructor>(nativeClass: T) {
-    type Keys = keyof InstanceType<T> & string;
+export function createPatch<T extends PrototypeTarget>(nativeClass: T) {
+    type Instance = T extends AbstractConstructor ? InstanceType<T> : never;
+    type Keys = keyof Instance & string;
 
     function OverrideFor(
         keyOrOptions?: Keys | OverrideOptions,
