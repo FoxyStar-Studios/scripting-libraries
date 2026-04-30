@@ -1,8 +1,8 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
     "name": "@foxystar/core",
-    "description": "Hello, world!",
-    "version": "0.1.0",
+    "description": "Core primitives and utilities shared across the FoxyStar ecosystem.",
+    "version": "0.1.1",
 
     "type": "module",
     "license": "MIT",
