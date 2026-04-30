@@ -1,8 +1,8 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
     "name": "@foxystar/patches",
-    "description": "Hello, world!",
-    "version": "0.1.0",
+    "description": "A lightweight, type-safe patching system for extending and modifying class behavior using decorators.",
+    "version": "0.1.2",
 
     "type": "module",
     "license": "MIT",
