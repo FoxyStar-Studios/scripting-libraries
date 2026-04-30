@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from "@minecraft/server";
+import { Vec2Like, Vec3Like } from "./phys/Vector3.ts";
 import { IRandom } from "./random/IRandom.ts";
 
 export class MathUtils {
@@ -22,7 +22,7 @@ export class MathUtils {
         return radians * (180 / Math.PI);
     }
 
-    public static fromRotation(rotation: Vector2): Vector3 {
+    public static fromRotation(rotation: Vec2Like): Vec3Like {
         const rotationH = this.toRadians(rotation.y * -1);
         const z0 = Math.cos(rotationH);
         const x0 = Math.sin(rotationH);
@@ -38,7 +38,7 @@ export class MathUtils {
         }
     }
 
-    public static rotateOffset(offset: Vector3, yawDegrees: number): Vector3 {
+    public static rotateOffset(offset: Vec3Like, yawDegrees: number): Vec3Like {
         const yaw = -yawDegrees * Math.PI / 180;
         const cos = Math.cos(yaw);
         const sin = Math.sin(yaw);

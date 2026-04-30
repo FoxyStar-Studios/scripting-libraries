@@ -1,11 +1,20 @@
-import { Vector3 as IVector3, Vector2 } from "@minecraft/server";
+export type Vec3Like = {
+    x: number;
+    y: number;
+    z: number;
+}
 
-export class Vector3 implements IVector3 {
+export type Vec2Like = {
+    x: number;
+    y: number;
+}
+
+export class Vector3 implements Vec3Like {
     public x: number = 0;
     public y: number = 0;
     public z: number = 0;
 
-    constructor(a: IVector3 | number, y?: number, z?: number) {
+    constructor(a: Vec3Like | number, y?: number, z?: number) {
         if (typeof a === "object") {
             this.x = a.x;
             this.y = a.y;
@@ -18,7 +27,7 @@ export class Vector3 implements IVector3 {
         }
     }
 
-    assign(vec: IVector3): this {
+    assign(vec: Vec3Like): this {
         this.x = vec.x;
         this.y = vec.y;
         this.z = vec.z;
@@ -26,7 +35,7 @@ export class Vector3 implements IVector3 {
         return this;
     }
 
-    dot(vector?: IVector3): number {
+    dot(vector?: Vec3Like): number {
         return Vector3.dot(this, vector);
     }
 
@@ -34,7 +43,7 @@ export class Vector3 implements IVector3 {
         return Vector3.magnitude(this);
     }
 
-    distance(vector: IVector3) {
+    distance(vector: Vec3Like) {
         return Vector3.distance(this, vector);
     }
 
@@ -42,27 +51,27 @@ export class Vector3 implements IVector3 {
         return Vector3.manhattanDistance(this);
     }
 
-    distanceSquared(vector: IVector3) {
+    distanceSquared(vector: Vec3Like) {
         return Vector3.distanceSquared(this, vector);
     }
 
-    add(vector: IVector3 | number): this {
+    add(vector: Vec3Like | number): this {
         return this.assign(Vector3.add(this, vector));
     }
 
-    subtract(vector: IVector3 | number): this {
+    subtract(vector: Vec3Like | number): this {
         return this.assign(Vector3.subtract(this, vector));
     }
 
-    multiply(vector: IVector3 | number): this {
+    multiply(vector: Vec3Like | number): this {
         return this.assign(Vector3.multiply(this, vector));
     }
 
-    divide(vector: IVector3 | number): this {
+    divide(vector: Vec3Like | number): this {
         return this.assign(Vector3.divide(this, vector));
     }
 
-    equals(vector: IVector3): boolean {
+    equals(vector: Vec3Like): boolean {
         return Vector3.equals(this, vector);
     }
 
@@ -99,7 +108,7 @@ export class Vector3 implements IVector3 {
     }
 
     // Static methods
-    static dot(a: IVector3, b?: IVector3): number {
+    static dot(a: Vec3Like, b?: Vec3Like): number {
         if (b === void 0) {
             b = a;
         }
@@ -107,23 +116,23 @@ export class Vector3 implements IVector3 {
         return (a.x * b.x + a.y * b.y + a.z * b.z);
     }
 
-    static magnitude(vector: IVector3): number {
+    static magnitude(vector: Vec3Like): number {
         return Math.sqrt(vector.x ** 2 + vector.y ** 2 + vector.z ** 2);
     }
 
-    static distance(a: IVector3, b: IVector3): number {
+    static distance(a: Vec3Like, b: Vec3Like): number {
         return this.magnitude(
             this.subtract(a, b)
         );
     }
 
-    static manhattanDistance(vector: IVector3): number {
+    static manhattanDistance(vector: Vec3Like): number {
         const abs = Vector3.abs(vector);
 
         return (abs.x + abs.y + abs.z);
     }
 
-    static add(a: IVector3, b: IVector3 | number): IVector3 {
+    static add(a: Vec3Like, b: Vec3Like | number): Vec3Like {
         return {
             x: a.x + (typeof b === "number" ? b : b.x),
             y: a.y + (typeof b === "number" ? b : b.y),
@@ -131,7 +140,7 @@ export class Vector3 implements IVector3 {
         }
     }
 
-    static subtract(a: IVector3, b: IVector3 | number): IVector3 {
+    static subtract(a: Vec3Like, b: Vec3Like | number): Vec3Like {
         return {
             x: a.x - (typeof b === "number" ? b : b.x),
             y: a.y - (typeof b === "number" ? b : b.y),
@@ -139,7 +148,7 @@ export class Vector3 implements IVector3 {
         }
     }
 
-    static multiply(a: IVector3, b: IVector3 | number): IVector3 {
+    static multiply(a: Vec3Like, b: Vec3Like | number): Vec3Like {
         return {
             x: a.x * (typeof b === "number" ? b : b.x),
             y: a.y * (typeof b === "number" ? b : b.y),
@@ -147,7 +156,7 @@ export class Vector3 implements IVector3 {
         }
     }
 
-    static divide(a: IVector3, b: IVector3 | number): IVector3 {
+    static divide(a: Vec3Like, b: Vec3Like | number): Vec3Like {
         return {
             x: a.x / (typeof b === "number" ? b : b.x),
             y: a.y / (typeof b === "number" ? b : b.y),
@@ -155,11 +164,11 @@ export class Vector3 implements IVector3 {
         }
     }
 
-    static equals(a: IVector3, b: IVector3): boolean {
+    static equals(a: Vec3Like, b: Vec3Like): boolean {
         return a.x === b.x && a.y === b.y && a.z === b.z;
     }
 
-    static center(vector: IVector3): IVector3 {
+    static center(vector: Vec3Like): Vec3Like {
         return {
             x: Math.floor(vector.x) + 0.5,
             y: Math.floor(vector.y) + 0.5,
@@ -168,7 +177,7 @@ export class Vector3 implements IVector3 {
     }
 
 
-    static min(a: IVector3, b: IVector3 | number): IVector3 {
+    static min(a: Vec3Like, b: Vec3Like | number): Vec3Like {
         return {
             x: Math.min(a.x, (typeof b === "number" ? b : b.x)),
             y: Math.min(a.y, (typeof b === "number" ? b : b.y)),
@@ -176,7 +185,7 @@ export class Vector3 implements IVector3 {
         }
     }
 
-    static max(a: IVector3, b: IVector3 | number): IVector3 {
+    static max(a: Vec3Like, b: Vec3Like | number): Vec3Like {
         return {
             x: Math.max(a.x, (typeof b === "number" ? b : b.x)),
             y: Math.max(a.y, (typeof b === "number" ? b : b.y)),
@@ -184,7 +193,7 @@ export class Vector3 implements IVector3 {
         }
     }
 
-    static abs(vector: IVector3): IVector3 {
+    static abs(vector: Vec3Like): Vec3Like {
         return {
             x: Math.abs(vector.x),
             y: Math.abs(vector.y),
@@ -192,7 +201,7 @@ export class Vector3 implements IVector3 {
         }
     }
 
-    static floor(vector: IVector3): IVector3 {
+    static floor(vector: Vec3Like): Vec3Like {
         return {
             x: Math.floor(vector.x),
             y: Math.floor(vector.y),
@@ -200,7 +209,7 @@ export class Vector3 implements IVector3 {
         }
     }
 
-    static ceil(vector: IVector3): IVector3 {
+    static ceil(vector: Vec3Like): Vec3Like {
         return {
             x: Math.ceil(vector.x),
             y: Math.ceil(vector.y),
@@ -209,12 +218,12 @@ export class Vector3 implements IVector3 {
     }
 
 
-    static distanceSquared(a: IVector3, b: IVector3): number {
+    static distanceSquared(a: Vec3Like, b: Vec3Like): number {
         const vector = this.subtract(a, b);
         return vector.x ** 2 + vector.y ** 2 + vector.z ** 2;
     }
 
-    static toVector2(direction: IVector3): Vector2 {
+    static toVector2(direction: Vec3Like): Vec2Like {
         const yaw = Math.atan2(-direction.x, -direction.z) * (180 / Math.PI);
 
         // Pitch: ângulo vertical
@@ -222,20 +231,20 @@ export class Vector3 implements IVector3 {
         return { x: pitch, y: yaw };
     }
 
-    static UP: IVector3 = { x: 0, y: 1, z: 0 };
-    static DOWN: IVector3 = { x: 0, y: -1, z: 0 };
-    static LEFT: IVector3 = { x: -1, y: 0, z: 0 };
-    static RIGHT: IVector3 = { x: 1, y: 0, z: 0 };
-    static FORWARD: IVector3 = { x: 0, y: 0, z: 1 };
-    static BACK: IVector3 = { x: 0, y: 0, z: -1 };
-    static ONE: IVector3 = { x: 1, y: 1, z: 1 };
-    static ZERO: IVector3 = { x: 0, y: 0, z: 0 };
-    static NEGATIVE_ONE: IVector3 = { x:-1, y: -1, z: -1 };
-    static WEST: IVector3 = { x: -1, y: 0, z: 0 };
-    static EAST: IVector3 = { x: 1, y: 0, z: 0 };
-    static NORTH: IVector3 = { x: 0, y: 0, z: -1 };
-    static SOUTH: IVector3 = { x: 0, y: 0, z: 1 };
-    static HALF: IVector3 = { x: 0.5, y: 0.5, z: 0.5 };
+    static UP: Vec3Like = { x: 0, y: 1, z: 0 };
+    static DOWN: Vec3Like = { x: 0, y: -1, z: 0 };
+    static LEFT: Vec3Like = { x: -1, y: 0, z: 0 };
+    static RIGHT: Vec3Like = { x: 1, y: 0, z: 0 };
+    static FORWARD: Vec3Like = { x: 0, y: 0, z: 1 };
+    static BACK: Vec3Like = { x: 0, y: 0, z: -1 };
+    static ONE: Vec3Like = { x: 1, y: 1, z: 1 };
+    static ZERO: Vec3Like = { x: 0, y: 0, z: 0 };
+    static NEGATIVE_ONE: Vec3Like = { x:-1, y: -1, z: -1 };
+    static WEST: Vec3Like = { x: -1, y: 0, z: 0 };
+    static EAST: Vec3Like = { x: 1, y: 0, z: 0 };
+    static NORTH: Vec3Like = { x: 0, y: 0, z: -1 };
+    static SOUTH: Vec3Like = { x: 0, y: 0, z: 1 };
+    static HALF: Vec3Like = { x: 0.5, y: 0.5, z: 0.5 };
 
 
     // Configuration: Total must be <= 53
@@ -248,7 +257,7 @@ export class Vector3 implements IVector3 {
     private static MASK_Y = (1 << 16) - 1; // 0xFFFF
     private static MASK_Z = (1 << 18) - 1; // 0x3FFFF
 
-    static serialize(v: IVector3 = Vector3.ZERO): bigint {
+    static serialize(v: Vec3Like = Vector3.ZERO): bigint {
         // Force inputs to unsigned integers based on bit depth
         const x = BigInt(v.x & this.MASK_X);
         const y = BigInt(v.y & this.MASK_Y);
@@ -258,7 +267,7 @@ export class Vector3 implements IVector3 {
         return (x << 34n) | (y << 18n) | z;
     }
 
-    static deserialize(n: bigint): IVector3 {
+    static deserialize(n: bigint): Vec3Like {
         const xRaw = Number((n >> 34n) & BigInt(this.MASK_X));
         const yRaw = Number((n >> 18n) & BigInt(this.MASK_Y));
         const zRaw = Number(n & BigInt(this.MASK_Z));

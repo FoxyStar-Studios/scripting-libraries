@@ -1,4 +1,4 @@
-import { Vector3 as IVector3 } from "@minecraft/server";
+import { Vec3Like } from "../phys/Vector3.ts";
 import { IRandom } from "./IRandom.ts";
 
 const MASK_64 = (1n << 64n) - 1n;
@@ -113,7 +113,7 @@ export class XoroshiroRandom extends IRandom {
         return new XoroshiroRandom(forkLow, forkHigh);
     }
 
-    forBlockPos(block: IVector3) {
+    forBlockPos(block: Vec3Like) {
         const v2 =
             116129781n * BigInt(block.z) ^
             ((0x2FC20F00000001n * BigInt(block.x)) >> 32n);

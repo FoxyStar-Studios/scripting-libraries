@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from "@minecraft/server";
+import { Vec2Like, Vec3Like } from "../phys/Vector3.ts";
 
 import { MathUtils } from "../Math.ts";
 import { SimpleRandom } from "../random/SimpleRandom.ts";
@@ -53,9 +53,9 @@ export class Perlin {
         }
 
         this.perm = [ ...p, ...p ];
-    };
+    }
 
-    noise(vec: Vector3 | Vector2) {
+    noise(vec: Vec3Like | Vec2Like) {
         const vector = "z" in vec ? vec : { ...vec, z: 0 };
 
         const X = Math.floor(vector.x) & 255;
@@ -95,5 +95,5 @@ export class Perlin {
                 )
             )
         );
-    };
-};
+    }
+}

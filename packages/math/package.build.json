@@ -1,8 +1,8 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
     "name": "@foxystar/math",
-    "description": "Hello, world!",
-    "version": "0.1.1",
+    "description": "A collection of math, geometry, and procedural utilities for simulations, games, and systems.",
+    "version": "0.1.2",
 
     "type": "module",
     "license": "MIT",
@@ -19,15 +19,5 @@
     "homepage": "https://www.npmjs.com/package/@foxystar/math",
     "bugs": {
         "url": "https://github.com/FoxyStar-Studios/scripting-libraries/issues"
-    },
-
-    "dependencies": {
-        "@minecraft/server": "*"
-    },
-    "mappings": {
-        "@minecraft/server": {
-            "name": "@minecraft/server",
-            "version": "*"
-        }
     }
 }

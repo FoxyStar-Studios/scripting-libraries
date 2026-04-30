@@ -1,5 +1,4 @@
-import { Vector3 as IVector3 } from "@minecraft/server";
-import { Vector3 } from "../phys/Vector3.ts";
+import { Vec3Like, Vector3 } from "../phys/Vector3.ts";
 
 import { IRandom } from "./IRandom.ts";
 
@@ -106,7 +105,7 @@ export class SimpleRandom extends IRandom {
         return new SimpleRandom(newSeed);
     }
 
-    forBlockPos(block: IVector3): SimpleRandom {
+    forBlockPos(block: Vec3Like): SimpleRandom {
         const blockSeed = new Vector3(block).randomSeed();
 
         const value = this.seed ^ (blockSeed >> 16n);

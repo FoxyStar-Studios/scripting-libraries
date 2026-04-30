@@ -1,9 +1,9 @@
-export * from "./Math.ts";
-export * from "./noise/PerlinNoise.ts";
+export { MathUtils } from "./Math.ts";
+export { Perlin } from "./noise/PerlinNoise.ts";
 
-export * from "./phys/AABB.ts";
-export * from "./phys/Vector3.ts";
+export { AABB } from "./phys/AABB.ts";
+export { Vector3 } from "./phys/Vector3.ts";
 
-export * from "./random/IRandom.ts";
-export * from "./random/SimpleRandom.ts";
-export * from "./random/XoroshiroRandom.ts";
+export { IRandom } from "./random/IRandom.ts";
+export { SimpleRandom } from "./random/SimpleRandom.ts";
+export { XoroshiroRandom } from "./random/XoroshiroRandom.ts";

@@ -10,7 +10,6 @@
     "imports": {
         "@foxystar/core": "./packages/core/src/index.ts",
         "@foxystar/math": "./packages/math/src/index.ts",
-        "@minecraft/server": "npm:@minecraft/server@^2.6.0",
         "@foxystar/events": "./packages/events/src/index.ts",
 
         "dnt": "https://deno.land/x/dnt@0.40.0/mod.ts",

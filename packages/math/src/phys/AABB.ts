@@ -1,30 +1,33 @@
-import type { Direction as IDirection, Entity, Vector3 as IVector3 } from "@minecraft/server";
+import { Vec3Like, Vector3 } from "./Vector3.ts";
 
 export const Direction = {
-    Down:  "Down"  as IDirection,
-    East:  "East"  as IDirection,
-    North: "North" as IDirection,
-    South: "South" as IDirection,
-    Up:    "Up"    as IDirection,
-    West:  "West"  as IDirection,
-} satisfies Record<string, IDirection>;
+    Down:  "Down",
+    East:  "East",
+    North: "North",
+    South: "South",
+    Up:    "Up",
+    West:  "West",
+} as const;
 export type Direction = typeof Direction[keyof typeof Direction];
 
-import { Vector3 } from "./Vector3.ts";
+interface AABBLike {
+    center: Vec3Like;
+    extent: Vec3Like
+};
 
 export class AABB {
-    constructor(public min: IVector3, public max: IVector3) {
+    constructor(public min: Vec3Like, public max: Vec3Like) {
         this.min = Vector3.min(min, max);
         this.max = Vector3.max(min, max);
     }
 
-    get center(): IVector3 {
+    get center(): Vec3Like {
         const result = Vector3.add(this.min, this.max);
 
         return Vector3.divide(result, 2);
     }
 
-    static fromOriginSize(origin: IVector3, size: IVector3) {
+    static fromOriginSize(origin: Vec3Like, size: Vec3Like) {
         return new AABB(
             origin,
             Vector3.add(origin, size)
@@ -38,7 +41,7 @@ export class AABB {
         );
     }
 
-    offset(offset: IVector3) {
+    offset(offset: Vec3Like) {
         return new AABB(
             Vector3.add(this.min, offset),
             Vector3.add(this.max, offset)
@@ -52,14 +55,14 @@ export class AABB {
         );
     }
 
-    inflate(vector: IVector3): AABB {
+    inflate(vector: Vec3Like): AABB {
         return new AABB(
             Vector3.subtract(this.min, vector),
             Vector3.add(this.max, vector)
         );
     }
 
-    intersects(other: AABB, offset: IVector3 = Vector3.ZERO) {
+    intersects(other: AABB, offset: Vec3Like = Vector3.ZERO) {
         const minX = this.min.x + offset.x;
         const minY = this.min.y + offset.y;
         const minZ = this.min.z + offset.z;
@@ -80,7 +83,7 @@ export class AABB {
         );
     }
 
-    intersectsRay(origin: IVector3, direction: IVector3): boolean {
+    intersectsRay(origin: Vec3Like, direction: Vec3Like): boolean {
         const invDirection = {
             x: 1 / direction.x,
             y: 1 / direction.y,
@@ -108,7 +111,7 @@ export class AABB {
         return tmax >= Math.max(tmin, 0);
     }
 
-    containsPoint(point: IVector3) {
+    containsPoint(point: Vec3Like) {
         return (
             point.x >= this.min.x && point.x <= this.max.x &&
             point.y >= this.min.y && point.y <= this.max.y &&
@@ -116,7 +119,7 @@ export class AABB {
         );
     }
 
-    static fromPixels(origin: IVector3, size: IVector3) {
+    static fromPixels(origin: Vec3Like, size: Vec3Like) {
         const PX = 1 / 16;
 
         return AABB.fromOriginSize(
@@ -125,7 +128,7 @@ export class AABB {
         );
     }
 
-    rotate(direction: IDirection, pivot: IVector3) {
+    rotate(direction: Direction, pivot: Vec3Like) {
         const corners = this.getCorners();
 
         const rotated = corners.map(p => {
@@ -157,7 +160,7 @@ export class AABB {
         return AABB.fromPoints(rotated);
     }
 
-    getCorners(): IVector3[] {
+    getCorners(): Vec3Like[] {
         const { min, max } = this;
         return [
             { x: min.x, y: min.y, z: min.z },
@@ -173,8 +176,8 @@ export class AABB {
         ];
     }
 
-    getIntersectingBlocks(): IVector3[] {
-        const locations: IVector3[] = [];
+    getIntersectingBlocks(): Vec3Like[] {
+        const locations: Vec3Like[] = [];
         const min = Vector3.floor(this.min);
         const max = Vector3.ceil(this.max);
 
@@ -190,11 +193,11 @@ export class AABB {
     }
 
     transform(
-        rotation: IVector3 | undefined,
-        rotationPivot: IVector3 | undefined,
-        scale: IVector3 | undefined,
-        scalePivot: IVector3 | undefined,
-        translation: IVector3 | undefined
+        rotation: Vec3Like | undefined,
+        rotationPivot: Vec3Like | undefined,
+        scale: Vec3Like | undefined,
+        scalePivot: Vec3Like | undefined,
+        translation: Vec3Like | undefined
     ): AABB {
         let corners = this.getCorners();
 
@@ -250,7 +253,7 @@ export class AABB {
         return AABB.fromPoints(corners);
     }
 
-    static fromPoints(points: IVector3[]) {
+    static fromPoints(points: Vec3Like[]) {
         let minX = Infinity, minY = Infinity, minZ = Infinity;
         let maxX = -Infinity, maxY = -Infinity, maxZ = -Infinity;
 
@@ -270,9 +273,7 @@ export class AABB {
         );
     }
 
-    static fromEntity(entity: Entity) {
-        const aabb = entity.getAABB();
-
+    static from(aabb: AABBLike) {
         const min = Vector3.subtract(aabb.center, aabb.extent);
         const max = Vector3.add(aabb.center, aabb.extent);
 
