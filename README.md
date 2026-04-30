@@ -10,4 +10,5 @@ Hello, world!
 Hello, world!
 
 ### [`@foxystar/math`](./packages/math/)
-Hello, world!
+Hello, world!### [`@foxystar/events`](./packages/events/)
+A lightweight decorator-based event system for working with event signals such as those from Minecraft: Bedrock Edition's Scripting API.
