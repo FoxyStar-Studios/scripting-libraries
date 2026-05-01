@@ -18,6 +18,12 @@ A collection of math, geometry, and procedural utilities for simulations, games,
 ### [`@foxystar/events`](./packages/events/)
 A lightweight decorator-based event system for working with event signals such as those from Minecraft: Bedrock Edition's Scripting API.
 
+### [`@foxystar/molang`](./packages/molang/)
+A fast, extensible, and safe implementation of the [Molang](https://learn.microsoft.com/en-us/minecraft/creator/documents/molang/introduction) expression language.
+
+### [`@foxystar/patches`](./packages/patches/)
+A lightweight, type-safe patching system for extending and modifying class behavior using decorators.
+
 ## Goals
 - Build reusable and modular systems
 - Keep packages small and focused

@@ -22,7 +22,7 @@ const PERMUTATION = [
     222,114,67,29,24,72,243,141,128,195,78,66,215,61,156,180
 ];
 
-export class Perlin {
+export class PerlinNoise {
     private perm: number[] = [];
 
     constructor(seed: number | bigint = 12345) {
@@ -66,9 +66,9 @@ export class Perlin {
         vector.y -= Math.floor(vector.y);
         vector.z -= Math.floor(vector.z);
 
-        const u = Perlin.fade(vector.x);
-        const v = Perlin.fade(vector.y);
-        const w = Perlin.fade(vector.z);
+        const u = PerlinNoise.fade(vector.x);
+        const v = PerlinNoise.fade(vector.y);
+        const w = PerlinNoise.fade(vector.z);
 
         const A = this.perm[X] + Y;
         const B = this.perm[X + 1] + Y;
@@ -76,22 +76,22 @@ export class Perlin {
         return MathUtils.lerp(w,
             MathUtils.lerp(v,
                 MathUtils.lerp(u,
-                    Perlin.grad(this.perm[A] + Z, vector.x, vector.y, vector.z),
-                    Perlin.grad(this.perm[B] + Z, vector.x - 1, vector.y, vector.z)
+                    PerlinNoise.grad(this.perm[A] + Z, vector.x, vector.y, vector.z),
+                    PerlinNoise.grad(this.perm[B] + Z, vector.x - 1, vector.y, vector.z)
                 ),
                 MathUtils.lerp(u,
-                    Perlin.grad(this.perm[A + 1] + Z, vector.x, vector.y - 1, vector.z),
-                    Perlin.grad(this.perm[B + 1] + Z, vector.x - 1, vector.y - 1, vector.z)
+                    PerlinNoise.grad(this.perm[A + 1] + Z, vector.x, vector.y - 1, vector.z),
+                    PerlinNoise.grad(this.perm[B + 1] + Z, vector.x - 1, vector.y - 1, vector.z)
                 )
             ),
             MathUtils.lerp(v,
                 MathUtils.lerp(u,
-                    Perlin.grad(this.perm[A] + Z + 1, vector.x, vector.y, vector.z - 1),
-                    Perlin.grad(this.perm[B] + Z + 1, vector.x - 1, vector.y, vector.z - 1)
+                    PerlinNoise.grad(this.perm[A] + Z + 1, vector.x, vector.y, vector.z - 1),
+                    PerlinNoise.grad(this.perm[B] + Z + 1, vector.x - 1, vector.y, vector.z - 1)
                 ),
                 MathUtils.lerp(u,
-                    Perlin.grad(this.perm[A + 1] + Z + 1, vector.x, vector.y - 1, vector.z - 1),
-                    Perlin.grad(this.perm[B + 1] + Z + 1, vector.x - 1, vector.y - 1, vector.z - 1)
+                    PerlinNoise.grad(this.perm[A + 1] + Z + 1, vector.x, vector.y - 1, vector.z - 1),
+                    PerlinNoise.grad(this.perm[B + 1] + Z + 1, vector.x - 1, vector.y - 1, vector.z - 1)
                 )
             )
         );

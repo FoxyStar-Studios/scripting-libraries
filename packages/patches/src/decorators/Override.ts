@@ -11,7 +11,7 @@ import type { AnyFn, OverrideOptions, RuntimeFn } from "../types/override.ts";
 
 function registerOverride(
     entry: OverrideEntry,
-    value: object,
+    value: AnyFn,
     context: ClassMethodDecoratorContext
 ) {
     const perFn = getMetadata<OverrideEntry[]>(METHOD_META_KEY, value) ?? [];
@@ -43,7 +43,7 @@ function resolveOptions(
     };
 }
 
-function createOverride(kind: "method") {
+function createOverrideMethod() {
     return function (
         nativeKeyOrOptions?: string | OverrideOptions,
         maybeOptions?: OverrideOptions
@@ -60,7 +60,7 @@ function createOverride(kind: "method") {
                 resolveOptions(context, nativeKeyOrOptions, maybeOptions);
 
             const entry: OverrideEntry = {
-                kind,
+                kind: "method",
                 nativeKey,
                 priority,
                 fn: value as unknown as RuntimeFn
@@ -131,7 +131,7 @@ function createOverrideSetter() {
 }
 
 export const Override = Object.assign(
-    createOverride("method"),
+    createOverrideMethod(),
     {
         get: createOverrideGetter(),
         set: createOverrideSetter()

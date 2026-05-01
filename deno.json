@@ -11,7 +11,10 @@
         "@foxystar/core": "./packages/core/src/index.ts",
         "@foxystar/math": "./packages/math/src/index.ts",
         "@foxystar/events": "./packages/events/src/index.ts",
+        "@foxystar/molang": "./packages/molang/src/index.ts",
         "@foxystar/patches": "./packages/patches/src/index.ts",
+
+        "@minecraft/server": "npm:@minecraft/server@^2.6.0",
 
         "dnt": "https://deno.land/x/dnt@0.40.0/mod.ts",
 

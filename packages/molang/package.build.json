@@ -1,8 +1,8 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
-    "name": "@foxystar/math",
-    "description": "A collection of math, geometry, and procedural utilities for simulations, games, and systems.",
-    "version": "0.1.3",
+    "name": "@foxystar/molang",
+    "description": "A fast, extensible, and safe implementation of the Molang expression language.",
+    "version": "0.1.0",
 
     "type": "module",
     "license": "MIT",
@@ -14,10 +14,14 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/FoxyStar-Studios/scripting-libraries.git",
-        "directory": "packages/math"
+        "directory": "packages/molang"
     },
-    "homepage": "https://www.npmjs.com/package/@foxystar/math",
+    "homepage": "https://www.npmjs.com/package/@foxystar/molang",
     "bugs": {
         "url": "https://github.com/FoxyStar-Studios/scripting-libraries/issues"
+    },
+
+    "dependencies": {
+        "@foxystar/math": "^0.1.3"
     }
 }
