@@ -1,8 +1,14 @@
 import { Expr, Statement, Program } from "../parser/expression.ts";
 import { MolangRuntimeError } from "../diagnostics/error.ts";
 import * as Suggestions from "../diagnostics/suggestions.ts";
-import { DEFAULT_CONTEXT, isNamespace, MolangBinding, MolangContext } from "./context.ts";
-import { MolangNamespace } from "@foxystar/molang";
+import {
+    DEFAULT_CONTEXT,
+    isNamespace,
+
+    MolangBinding,
+    MolangContext,
+    MolangNamespace
+} from "./context.ts";
 
 export interface MolangOptions {
     strict?: boolean;

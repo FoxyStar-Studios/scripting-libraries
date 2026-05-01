@@ -4,7 +4,10 @@
         "build": "deno run -A scripts/build.ts",
 
         "build:core": "deno run -A scripts/build.ts core",
-        "build:math": "deno run -A scripts/build.ts math"
+        "build:events": "deno run -A scripts/build.ts events",
+        "build:math": "deno run -A scripts/build.ts math",
+        "build:molang": "deno run -A scripts/build.ts molang",
+        "build:patches": "deno run -A scripts/build.ts patches"
     },
 
     "imports": {
