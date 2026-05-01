@@ -1,0 +1,34 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "name": "@foxystar/minecraft",
+    "description": "Utilities and helpers for working with the @minecraft/server",
+    "version": "0.1.0",
+
+    "type": "module",
+    "license": "MIT",
+    "author": {
+        "name": "FoxyStar Studios",
+        "url": "https://github.com/FoxyStar-Studios"
+    },
+
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/FoxyStar-Studios/scripting-libraries.git",
+        "directory": "packages/minecraft"
+    },
+    "homepage": "https://www.npmjs.com/package/@foxystar/minecraft",
+    "bugs": {
+        "url": "https://github.com/FoxyStar-Studios/scripting-libraries/issues"
+    },
+
+    "dependencies": {
+        "@minecraft/server": "*",
+        "@foxystar/math": "^0.1.0"
+    },
+    "mappings": {
+        "@minecraft/server": {
+            "name": "@minecraft/server",
+            "version": "*"
+        }
+    }
+}

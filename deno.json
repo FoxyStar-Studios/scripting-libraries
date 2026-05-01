@@ -13,6 +13,7 @@
         "@foxystar/events": "./packages/events/src/index.ts",
         "@foxystar/molang": "./packages/molang/src/index.ts",
         "@foxystar/patches": "./packages/patches/src/index.ts",
+        "@foxystar/minecraft": "./packages/minecraft/src/index.ts",
 
         "@minecraft/server": "npm:@minecraft/server@^2.6.0",
 

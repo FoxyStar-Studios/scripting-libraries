@@ -24,6 +24,9 @@ A fast, extensible, and safe implementation of the [Molang](https://learn.micros
 ### [`@foxystar/patches`](./packages/patches/)
 A lightweight, type-safe patching system for extending and modifying class behavior using decorators.
 
+### [`@foxystar/minecraft`](./packages/minecraft/)
+Utilities and helpers for working with the [@minecraft/server](https://learn.microsoft.com/en-us/minecraft/creator/scriptapi/minecraft/server/minecraft-server)
+
 ## Goals
 - Build reusable and modular systems
 - Keep packages small and focused
