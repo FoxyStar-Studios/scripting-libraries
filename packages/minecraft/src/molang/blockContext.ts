@@ -47,16 +47,16 @@ export function createBlockContext(
         temp: {},
 
         context: {
-            other: (): MolangContext => {
+            other: (): MolangContext | undefined => {
                 if (player === void 0) {
-                    return createMolangContext();
+                    return;
                 }
 
                 const equippable = player.getComponent(EntityEquippableComponent.componentId);
                 const itemStack = equippable?.getEquipment(EquipmentSlot.Mainhand);
 
                 if (itemStack === void 0) {
-                    return createMolangContext();
+                    return;
                 }
 
                 return createItemStackContext(itemStack);

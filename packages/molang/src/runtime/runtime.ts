@@ -112,7 +112,8 @@ export class MolangRuntime {
             }
 
             case "ConditionalStatement": {
-                const condition = this.evaluate(stmt.condition);
+                let condition = this.evaluate(stmt.condition);
+                condition = this.resolveCallable(condition, stmt.condition);
 
                 if (this.toBoolean(condition)) {
                     return this.evaluateStatement(stmt.then);
@@ -556,9 +557,38 @@ export class MolangRuntime {
     }
 
     private toBoolean(v: unknown): boolean {
-        return this.options.strict
-            ? Boolean(v)
-            : this.toNumber(v) !== 0;
+        if (this.options.strict) {
+            return Boolean(v);
+        }
+
+        if (typeof v === "boolean") return v;
+        if (typeof v === "number") return v !== 0;
+
+        // undefined / null -> false
+        if (v === undefined || v === null) return false;
+
+        // objects -> true
+        return true;
+    }
+
+    private resolveCallable(value: unknown, expr: Expr): unknown {
+        if (typeof value === "function" && value.length === 0) {
+            try {
+                return value();
+            } catch (error: unknown) {
+                if (error instanceof MolangRuntimeError) {
+                    throw error;
+                }
+
+                throw new MolangRuntimeError(
+                    error instanceof Error ? error.message : String(error),
+                    expr,
+                    this.source
+                );
+            }
+        }
+
+        return value;
     }
 
     private applyOperator(operator: string, left: unknown, right: unknown, expr: Expr): unknown {
