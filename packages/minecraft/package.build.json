@@ -2,7 +2,7 @@
     "$schema": "https://json.schemastore.org/package.json",
     "name": "@foxystar/minecraft",
     "description": "Utilities and helpers for working with the @minecraft/server",
-    "version": "0.1.0",
+    "version": "0.1.1",
 
     "type": "module",
     "license": "MIT",
@@ -23,7 +23,7 @@
 
     "dependencies": {
         "@minecraft/server": "*",
-        "@foxystar/molang": "^0.1.0"
+        "@foxystar/molang": "^0.1.1"
     },
     "mappings": {
         "@minecraft/server": {
