@@ -10,27 +10,27 @@ export class CommandRegistry {
     static registerCommand(ctor: new () => ICustomCommand): void {
         const instance = new ctor();
 
-        if (this.REGISTRY.has(instance.identifier)) {
+        if (CommandRegistry.REGISTRY.has(instance.identifier)) {
             throw new Error(`Command '${instance.identifier.toString()}' is already registered`);
         }
 
-        this.REGISTRY.set(instance.identifier, instance);
+        CommandRegistry.REGISTRY.set(instance.identifier, instance);
 
         // aliases
         for (const alias of instance.aliases) {
-            if (this.REGISTRY.has(alias)) {
+            if (CommandRegistry.REGISTRY.has(alias)) {
                 throw new Error(`Alias '${alias.toString()}' is already registered`);
             }
 
             const aliasInstance = new ctor();
             aliasInstance.identifier = alias;
 
-            this.REGISTRY.set(alias, aliasInstance);
+            CommandRegistry.REGISTRY.set(alias, aliasInstance);
         }
     }
 
     static registerEnum(identifier: Identifier, values: string[]): Identifier {
-        const existing = this.ENUMS.get(identifier);
+        const existing = CommandRegistry.ENUMS.get(identifier);
 
         if (existing !== undefined) {
             const same =
@@ -46,27 +46,27 @@ export class CommandRegistry {
             return identifier;
         }
 
-        this.ENUMS.set(identifier, values);
+        CommandRegistry.ENUMS.set(identifier, values);
         return identifier;
     }
 
     static get(identifier: Identifier): ICustomCommand | undefined {
-        return this.REGISTRY.get(identifier);
+        return CommandRegistry.REGISTRY.get(identifier);
     }
 
     static getAll(): ICustomCommand[] {
-        return [ ...this.REGISTRY.values() ];
+        return [ ...CommandRegistry.REGISTRY.values() ];
     }
 
     static registerAll(registry: CustomCommandRegistry): void {
-        for (const command of this.REGISTRY.values()) {
+        for (const command of CommandRegistry.REGISTRY.values()) {
             registry.registerCommand(
                 command.toJSON(),
                 command.execute.bind(command)
             );
         }
 
-        for (const [ name, values ] of this.ENUMS) {
+        for (const [ name, values ] of CommandRegistry.ENUMS) {
             registry.registerEnum(name.toString(), values);
         }
     }

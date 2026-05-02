@@ -6,37 +6,37 @@ export type ComponentCtor<T = unknown> = {
 };
 
 export class ComponentRegistry<T> {
-    private readonly REGISTRY = new Map<Identifier, T>();
+    private readonly registry = new Map<Identifier, T>();
 
-    registerComponent<C extends T>(ctor: ComponentCtor<C>): void {
+    registerComponent = <C extends T>(ctor: ComponentCtor<C>): void => {
         if (!ctor.componentId) {
             throw new Error(`Component ${ctor.name} is missing a componentId`);
         }
 
-        if (this.REGISTRY.has(ctor.componentId)) {
+        if (this.registry.has(ctor.componentId)) {
             throw new Error(
                 `Component '${ctor.componentId}' is already registered`
             );
         }
 
         const instance = new ctor();
-        this.REGISTRY.set(ctor.componentId, instance);
+        this.registry.set(ctor.componentId, instance);
     }
 
     get(identifier: Identifier): T | undefined {
-        return this.REGISTRY.get(identifier);
+        return this.registry.get(identifier);
     }
 
     getAll(): T[] {
-        return [ ...this.REGISTRY.values() ];
+        return [ ...this.registry.values() ];
     }
 
     entries(): IterableIterator<[Identifier, T]> {
-        return this.REGISTRY.entries();
+        return this.registry.entries();
     }
 
     registerAll(registerFn: (identifier: Identifier, component: T) => void): void {
-        for (const [ identifier, component ] of this.REGISTRY) {
+        for (const [ identifier, component ] of this.registry) {
             registerFn(identifier, component);
         }
     }
