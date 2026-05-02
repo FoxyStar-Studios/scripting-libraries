@@ -1,6 +1,6 @@
 import { Identifier } from "@foxystar/core";
 
-export type ComponentCtor<T> = {
+export type ComponentCtor<T = unknown> = {
     new (): T;
     componentId: Identifier;
 };
