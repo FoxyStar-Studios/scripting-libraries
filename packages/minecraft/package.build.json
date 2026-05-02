@@ -23,6 +23,7 @@
 
     "dependencies": {
         "@minecraft/server": "*",
+        "@foxystar/core": "^0.1.1",
         "@foxystar/molang": "^0.1.1"
     },
     "mappings": {

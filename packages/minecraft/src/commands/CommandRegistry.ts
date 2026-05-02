@@ -39,7 +39,7 @@ export class CommandRegistry {
 
             if (!same) {
                 throw new Error(
-                    `Enum '${name}' already exists with different values`
+                    `Enum '${identifier.toString()}' already exists with different values`
                 );
             }
 
