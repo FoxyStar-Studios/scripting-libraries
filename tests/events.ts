@@ -29,7 +29,7 @@ class TestEventSignal implements EventSignal<TestEvent> {
 let callCount = 0;
 const signal = new TestEventSignal();
 
-@Events.RegisterEvent(signal)
+@Events.registerEvent(signal)
 class OnTest extends EventHandler<TestEvent> {
     public override onEvent(event: TestEvent): void {
         console.log("Event received:", event.value);

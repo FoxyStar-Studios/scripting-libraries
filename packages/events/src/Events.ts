@@ -1,10 +1,20 @@
 import { EVENT_REGISTRY, INSTANCES } from "./registry.ts";
-import type { EventCallback } from "./types.ts";
+import type { EventCallback, EventConstructor, EventSignal, RegisteredEvent } from "./types.ts";
 import { EventHandler } from "./EventHandler.ts";
-import { RegisterEvent } from "./decorators/RegisterEvent.ts";
 
 export class Events {
-    public static RegisterEvent = RegisterEvent;
+    public static registerEvent<E, OptionsType = void>(
+        eventSignal: EventSignal<E, OptionsType>,
+        options?: OptionsType
+    ) {
+        return function <T extends EventConstructor<E>>(constructor: T) {
+            EVENT_REGISTRY.push({
+                constructor,
+                signal: eventSignal,
+                options
+            } as RegisteredEvent<unknown, unknown>);
+        };
+    }
 
     public static initializeEvents(): void {
         if (INSTANCES.length > 0) {
