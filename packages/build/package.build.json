@@ -1,8 +1,8 @@
 {
     "$schema": "https://json.schemastore.org/package.json",
-    "name": "@foxystar/minecraft",
-    "description": "Utilities and helpers for working with the @minecraft/server",
-    "version": "0.1.4",
+    "name": "@foxystar/build",
+    "description": "A modular collection of esbuild plugins and build utilities for FoxyStar projects.",
+    "version": "0.1.0",
 
     "type": "module",
     "license": "MIT",
@@ -14,18 +14,14 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/FoxyStar-Studios/scripting-libraries.git",
-        "directory": "packages/minecraft"
+        "directory": "packages/build"
     },
-    "homepage": "https://www.npmjs.com/package/@foxystar/minecraft",
+    "homepage": "https://www.npmjs.com/package/@foxystar/build",
     "bugs": {
         "url": "https://github.com/FoxyStar-Studios/scripting-libraries/issues"
     },
 
     "peerDependencies": {
-        "@minecraft/server": "*"
-    },
-    "dependencies": {
-        "@foxystar/core": "^0.1.1",
-        "@foxystar/molang": "^0.1.1"
+        "esbuild": ">=0.28"
     }
 }
