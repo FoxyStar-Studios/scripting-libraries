@@ -62,7 +62,7 @@ export class AABB {
         );
     }
 
-    intersects(other: AABB, offset: Vec3Like = Vector3.ZERO) {
+    intersects(other: AABB | AABBLike, offset: Vec3Like = Vector3.ZERO) {
         const minX = this.min.x + offset.x;
         const minY = this.min.y + offset.y;
         const minZ = this.min.z + offset.z;
@@ -71,16 +71,38 @@ export class AABB {
         const maxY = this.max.y + offset.y;
         const maxZ = this.max.z + offset.z;
 
-        return (
-            maxX > other.min.x &&
-            minX < other.max.x &&
+        if (other instanceof AABB) {
+            return (
+                maxX > other.min.x &&
+                minX < other.max.x &&
 
-            maxY > other.min.y &&
-            minY < other.max.y &&
+                maxY > other.min.y &&
+                minY < other.max.y &&
 
-            maxZ > other.min.z &&
-            minZ < other.max.z
-        );
+                maxZ > other.min.z &&
+                minZ < other.max.z
+            );
+        }
+        else {
+            const boxMinX = other.center.x - other.extent.x;
+            const boxMinY = other.center.y - other.extent.y;
+            const boxMinZ = other.center.z - other.extent.z;
+
+            const boxMaxX = other.center.x + other.extent.x;
+            const boxMaxY = other.center.y + other.extent.y;
+            const boxMaxZ = other.center.z + other.extent.z;
+
+            return (
+                maxX > boxMinX &&
+                minX < boxMaxX &&
+
+                maxY > boxMinY &&
+                minY < boxMaxY &&
+
+                maxZ > boxMinZ &&
+                minZ < boxMaxZ
+            );
+        }
     }
 
     intersectsRay(origin: Vec3Like, direction: Vec3Like): boolean {
