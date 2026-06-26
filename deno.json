@@ -18,7 +18,7 @@
         "@foxystar/patches": "./packages/patches/src/index.ts",
         "@foxystar/minecraft": "./packages/minecraft/src/index.ts",
 
-        "@minecraft/server": "npm:@minecraft/server@^2.6.0",
+        "@minecraft/server": "npm:@minecraft/server@^2.9.0-rc.1.26.40-preview.29",
 
         "dnt": "https://deno.land/x/dnt@0.40.0/mod.ts",
 

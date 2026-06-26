@@ -40,6 +40,8 @@ export function createBlockContext(
     const facing = permutation.getState("minecraft:cardinal_direction") as keyof typeof CARDINAL_OFFSETS | undefined;
     const direction = facing ? CARDINAL_OFFSETS[facing] ?? Vector3.ZERO : Vector3.ZERO;
 
+    const parts = block.getParts();
+
     return createMolangContext({
         variable: {
             identifier: block.typeId,
@@ -72,6 +74,15 @@ export function createBlockContext(
             light_level: () => block.getLightLevel(),
 
             get redstone_power() {
+                if (parts !== undefined) {
+                    for (const part of parts) {
+                        const power = part.getRedstonePower() ?? 0;
+                        if (power > 0) {
+                            return power;
+                        }
+                    }
+                }
+
                 return block.getRedstonePower() ?? 0;
             },
             get above_block_redstone_power() {
