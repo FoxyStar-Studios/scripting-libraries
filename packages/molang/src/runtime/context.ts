@@ -31,7 +31,11 @@ export const DEFAULT_CONTEXT: MolangContext = {
 
     variable: {},
     temp: {},
-    context: {},
+    context: {
+        log: (...args: unknown[]) => {
+            console.log(...args);
+        }
+    },
     query: {
         block_state: (_name: string) => {
             throw new Error("This function call can only be used in block context");
