@@ -17,6 +17,16 @@ async function build(pkgName: string) {
         }
     ).then((m) => m.default);
 
+    const denoConfig = JSON.parse(
+        await Deno.readTextFile("./deno.json")
+    );
+
+    const minecraftSpecifier = denoConfig.imports["@minecraft/server"];
+    const minecraftVersion = minecraftSpecifier.replace(/^npm:@minecraft\/server@/, "");
+
+    pkg.peerDependencies ??= {};
+    pkg.peerDependencies["@minecraft/server"] = minecraftVersion;
+
     await dnt.emptyDir(outDir);
     await dnt.build({
         package: {
