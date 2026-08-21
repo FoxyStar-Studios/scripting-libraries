@@ -247,41 +247,58 @@ export class Vector3 implements Vec3Like {
     static HALF: Vec3Like = { x: 0.5, y: 0.5, z: 0.5 };
 
 
-    // Configuration: Total must be <= 53
-    private static BITS_X = 18;
-    private static BITS_Y = 16;
-    private static BITS_Z = 18;
+    // Configuration
+    private static BITS_X = 22;
+    private static BITS_Y = 12;
+    private static BITS_Z = 22;
 
-    // Pre-calculated multipliers (Like bit shifts: 2^n)
-    private static MASK_X = (1 << 18) - 1; // 0x3FFFF
-    private static MASK_Y = (1 << 16) - 1; // 0xFFFF
-    private static MASK_Z = (1 << 18) - 1; // 0x3FFFF
+    // Masks
+    private static readonly MASK_X = (1n << BigInt(this.BITS_X)) - 1n;
+    private static readonly MASK_Y = (1n << BigInt(this.BITS_Y)) - 1n;
+    private static readonly MASK_Z = (1n << BigInt(this.BITS_Z)) - 1n;
+
+    // Bit shifts
+    private static readonly SHIFT_Z = 0n;
+    private static readonly SHIFT_Y = BigInt(this.BITS_Z);
+    private static readonly SHIFT_X = BigInt(this.BITS_Z + this.BITS_Y);
 
     static serialize(v: Vec3Like = Vector3.ZERO): bigint {
-        // Force inputs to unsigned integers based on bit depth
-        const x = BigInt(v.x & this.MASK_X);
-        const y = BigInt(v.y & this.MASK_Y);
-        const z = BigInt(v.z & this.MASK_Z);
+        const x = BigInt(Math.trunc(v.x)) & this.MASK_X;
+        const y = BigInt(Math.trunc(v.y)) & this.MASK_Y;
+        const z = BigInt(Math.trunc(v.z)) & this.MASK_Z;
 
-        // Combine using multiplication (Arithmetic packing)
-        return (x << 34n) | (y << 18n) | z;
+        return (
+            (x << this.SHIFT_X) |
+            (y << this.SHIFT_Y) |
+            (z << this.SHIFT_Z)
+        );
     }
 
     static deserialize(n: bigint): Vec3Like {
-        const xRaw = Number((n >> 34n) & BigInt(this.MASK_X));
-        const yRaw = Number((n >> 18n) & BigInt(this.MASK_Y));
-        const zRaw = Number(n & BigInt(this.MASK_Z));
+        const x = Number(this.signExtend(
+            (n >> this.SHIFT_X) & this.MASK_X,
+            this.BITS_X
+        ));
 
-        return {
-            x: this.signExtend(xRaw, this.BITS_X),
-            y: this.signExtend(yRaw, this.BITS_Y),
-            z: this.signExtend(zRaw, this.BITS_Z),
-        }
+        const y = Number(this.signExtend(
+            (n >> this.SHIFT_Y) & this.MASK_Y,
+            this.BITS_Y
+        ));
+
+        const z = Number(this.signExtend(
+            (n >> this.SHIFT_Z) & this.MASK_Z,
+            this.BITS_Z
+        ));
+
+        return { x, y, z };
     }
 
     // Helper to restore negative numbers from unsigned bits
-    private static signExtend(val: number, bits: number): number {
-        const max = 1 << (bits - 1);
-        return (val & (max - 1)) - (val & max);
+    private static signExtend(value: bigint, bits: number): bigint {
+        const signBit = 1n << BigInt(bits - 1);
+
+        return (value & signBit) !== 0n
+            ? value - (1n << BigInt(bits))
+            : value;
     }
 }
