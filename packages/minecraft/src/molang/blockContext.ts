@@ -112,7 +112,7 @@ export function createBlockContext(
             },
 
             block_state: (name: string) => {
-                return permutation.getState(name as keyof BlockPermutation["getAllStates"]);
+                return block.permutation.getState(name as keyof BlockPermutation["getAllStates"]);
             },
             above_block_state: (name: string) => {
                 return above?.permutation?.getState(name as keyof BlockPermutation["getAllStates"]);

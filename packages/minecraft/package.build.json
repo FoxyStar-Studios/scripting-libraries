@@ -2,7 +2,7 @@
     "$schema": "https://json.schemastore.org/package.json",
     "name": "@foxystar/minecraft",
     "description": "Utilities and helpers for working with the @minecraft/server",
-    "version": "0.1.5",
+    "version": "0.1.6",
 
     "type": "module",
     "license": "MIT",
