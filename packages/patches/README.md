@@ -9,6 +9,7 @@ npm install @foxystar/patches
 ## Overview
 `@foxystar/patches` provides a clean and flexible way to:
 - Override class methods, getters, and setters
+- Add new methods, getters, and setters
 - Chain multiple patches together
 - Control execution order with priorities
 - Write modular, reusable patches
@@ -102,6 +103,52 @@ class HealthPatch {
 } 
 ```
 
+## Adding New Members
+Use `Add` to give a class methods, getters, or setters it does not have yet:
+
+```ts
+// Tell TypeScript about the new members
+// (for a library class, put this inside `declare module "..." { }`).
+interface SomeClass {
+    label: string;
+    describe(): string;
+}
+
+const Some = createPatch(SomeClass);
+const LABEL = Symbol("label");
+
+// Optional: types `this` as the patched class inside the patch.
+interface LabelPatch extends SomeClass {}
+
+@Some.Patch
+class LabelPatch {
+
+    @Some.Add()
+    get label(): string {
+        return (this as any)[LABEL] ?? "unnamed";
+    }
+
+    @Some.Add()
+    set label(value: string) {
+        (this as any)[LABEL] = value;
+    }
+
+    @Some.Add()
+    describe(): string {
+        return `${this.label}: ${this.method(1)}`;
+    }
+}
+
+const instance = new SomeClass();
+instance.label = "test";
+instance.describe();
+```
+
+- The member is installed as-is, so `this` is the patched instance and there is no `original` argument
+- `@Add("name")` installs the member under a different name
+- Adding a member that already exists throws; use `Override` for those
+- Added members can be overridden by other patches, like native ones
+
 ## Type-Safe Overrides
 When using `createPatch`, property keys are fully typed:
 
@@ -142,12 +189,16 @@ Provides:
 - `Some.Override`
 - `Some.Override.get`
 - `Some.Override.set`
+- `Some.Add`
+
+### `@Add(key?)`
+Adds a new method, getter, or setter. The target is `key`, else the name of the decorated member.
 
 ### `@Patch(Class)`
 Registers a patch class.
 
 ### `@Override(key?, options?)`
-Overrides a method.
+Overrides a method. The target is `key`, else `options.nativeKey`, else the name of the decorated method.
 
 Options:
 ```ts
@@ -173,7 +224,8 @@ Overrides a setter.
 > [!IMPORTANT]
 > - Static methods are not supported
 > - Patch order is determined by priority
-> - Lower priority runs closer to the original implementation
+> - Lower priority runs first (outermost); higher priority runs closer to the original implementation
+> - Members inherited from a parent class can be patched; the patch only affects the class it is applied to
 
 ## Why use this?
 Instead of:

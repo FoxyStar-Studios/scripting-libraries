@@ -1,17 +1,17 @@
 import { getMetadata } from "../metadata/metadata.ts";
 import { METHOD_META_KEY, OVERRIDE_KEY } from "../symbols.ts";
-import type { OverrideEntry } from "../types/patch.ts";
+import type { MemberEntry } from "../types/patch.ts";
 import type { AbstractConstructor } from "../decorators/Patch.ts";
 
-export function collectOverrides(patchClass: AbstractConstructor, metadata?: object): OverrideEntry[] {
+export function collectOverrides(patchClass: AbstractConstructor, metadata?: object): MemberEntry[] {
     if (metadata) {
-        const entries = getMetadata<OverrideEntry[]>(OVERRIDE_KEY, metadata);
+        const entries = getMetadata<MemberEntry[]>(OVERRIDE_KEY, metadata);
         if (entries?.length) {
             return entries;
         }
     }
 
-    const entries: OverrideEntry[] = [];
+    const entries: MemberEntry[] = [];
 
     for (const key of Object.getOwnPropertyNames(patchClass.prototype)) {
         if (key === "constructor") {
@@ -22,7 +22,7 @@ export function collectOverrides(patchClass: AbstractConstructor, metadata?: obj
 
         for (const fn of [ descriptor.value, descriptor.get, descriptor.set ]) {
             if (typeof fn === "function") {
-                const meta = getMetadata<OverrideEntry[]>(METHOD_META_KEY, fn);
+                const meta = getMetadata<MemberEntry[]>(METHOD_META_KEY, fn);
 
                 if (meta?.length) {
                     entries.push(...meta);

@@ -25,6 +25,16 @@ export type SetterEntry = {
 
 export type OverrideEntry = MethodEntry | GetterEntry | SetterEntry;
 
+// A brand new member, installed as-is on the native prototype.
+export type AddEntry = {
+    kind: "add";
+    member: "method" | "getter" | "setter";
+    nativeKey: string;
+    fn: RuntimeFn;
+};
+
+export type MemberEntry = OverrideEntry | AddEntry;
+
 export type PatchEntry = {
-    overrides: OverrideEntry[];
+    overrides: MemberEntry[];
 };

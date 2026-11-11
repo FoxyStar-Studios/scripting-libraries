@@ -1,4 +1,5 @@
-import { Patch, AbstractConstructor, PrototypeTarget } from "../decorators/Patch.ts";
+import { Patch, PrototypeTarget } from "../decorators/Patch.ts";
+import { Add } from "../decorators/Add.ts";
 import { Override } from "../decorators/Override.ts";
 import type { OverrideOptions } from "../types/override.ts";
 
@@ -20,44 +21,29 @@ type OverrideForFn<Keys extends string> = {
 };
 
 export function createPatch<T extends PrototypeTarget>(nativeClass: T) {
-    type Keys =
-        T extends AbstractConstructor
-            ? keyof InstanceType<T> & string : string;
+    // Read keys off the prototype rather than `InstanceType<T>`, so classes with
+    // private constructors or constructor parameters are typed as well.
+    type Keys = keyof T["prototype"] & string;
 
     const OverrideFor = Object.assign(
         function (
             keyOrOptions?: Keys | OverrideOptions,
             maybeOptions?: OverrideOptions
         ) {
-            if (typeof keyOrOptions === "string") {
-                return Override({
-                    ...maybeOptions,
-                    nativeKey: keyOrOptions
-                });
-            }
-
-            return Override(keyOrOptions);
+            return Override(keyOrOptions, maybeOptions);
         }, {
             get(
                 keyOrOptions?: Keys | OverrideOptions,
                 maybeOptions?: OverrideOptions
             ) {
-                if (typeof keyOrOptions === "string") {
-                    return Override.get(keyOrOptions, maybeOptions);
-                }
-
-                return Override.get(keyOrOptions);
+                return Override.get(keyOrOptions, maybeOptions);
             },
 
             set(
                 keyOrOptions?: Keys | OverrideOptions,
                 maybeOptions?: OverrideOptions
             ) {
-                if (typeof keyOrOptions === "string") {
-                    return Override.set(keyOrOptions, maybeOptions);
-                }
-
-                return Override.set(keyOrOptions);
+                return Override.set(keyOrOptions, maybeOptions);
             }
         }
     ) as OverrideForFn<Keys>;
@@ -65,6 +51,7 @@ export function createPatch<T extends PrototypeTarget>(nativeClass: T) {
     const PatchFor = Patch(nativeClass);
     return {
         Patch: PatchFor,
-        Override: OverrideFor
+        Override: OverrideFor,
+        Add
     };
 }

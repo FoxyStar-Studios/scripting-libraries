@@ -1,3 +1,4 @@
+export { Add } from "./decorators/Add.ts";
 export { Override } from "./decorators/Override.ts";
 export { Patch } from "./decorators/Patch.ts";
 export { createPatch } from "./helpers/createPatch.ts";

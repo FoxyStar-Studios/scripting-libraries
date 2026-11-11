@@ -17,12 +17,14 @@ export function Patch<T extends PrototypeTarget>(nativeClass: T) {
     return function (patchClass: AbstractConstructor, context: ClassDecoratorContext) {
         const overrides = collectOverrides(patchClass, context.metadata as object);
 
-        const patches = getMetadata<PatchEntry[]>(PATCHES_KEY, nativeClass) ?? [];
+        const patches = [
+            ...(getMetadata<PatchEntry[]>(PATCHES_KEY, nativeClass) ?? []),
+            { overrides }
+        ];
 
-        defineMetadata(PATCHES_KEY, [ ...patches, {
-            overrides
-        }], nativeClass);
-
-        applyPatches(nativeClass);
+        // Register the patch only once it applied, so a patch that throws
+        // does not break every later patch of the same class.
+        applyPatches(nativeClass, patches);
+        defineMetadata(PATCHES_KEY, patches, nativeClass);
     };
 }

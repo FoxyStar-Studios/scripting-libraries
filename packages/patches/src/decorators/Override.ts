@@ -1,6 +1,7 @@
 import { getMetadata, defineMetadata } from "../metadata/metadata.ts";
 import { METHOD_META_KEY, OVERRIDE_KEY } from "../symbols.ts";
 import type {
+    MemberEntry,
     OverrideEntry,
     GetterFn,
     GetterEntry,
@@ -9,17 +10,17 @@ import type {
 } from "../types/patch.ts";
 import type { AnyFn, OverrideOptions, RuntimeFn } from "../types/override.ts";
 
-function registerOverride(
-    entry: OverrideEntry,
+export function registerOverride(
+    entry: MemberEntry,
     value: AnyFn,
-    context: ClassMethodDecoratorContext
+    context: ClassMethodDecoratorContext | ClassGetterDecoratorContext | ClassSetterDecoratorContext
 ) {
-    const perFn = getMetadata<OverrideEntry[]>(METHOD_META_KEY, value) ?? [];
+    const perFn = getMetadata<MemberEntry[]>(METHOD_META_KEY, value) ?? [];
     defineMetadata(METHOD_META_KEY, [ ...perFn, entry ], value);
 
     if (context.metadata) {
         const classEntries =
-            getMetadata<OverrideEntry[]>(OVERRIDE_KEY, context.metadata as object) ?? [];
+            getMetadata<MemberEntry[]>(OVERRIDE_KEY, context.metadata as object) ?? [];
 
         defineMetadata(OVERRIDE_KEY, [ ...classEntries, entry ], context.metadata as object);
     }
@@ -30,16 +31,14 @@ function resolveOptions(
     nativeKeyOrOptions?: string | OverrideOptions,
     maybeOptions?: OverrideOptions
 ) {
-    if (typeof nativeKeyOrOptions === "string") {
-        return {
-            nativeKey: nativeKeyOrOptions,
-            priority: maybeOptions?.priority ?? 0
-        };
-    }
+    // A key passed as the first argument wins over `options.nativeKey`.
+    const options = typeof nativeKeyOrOptions === "string"
+        ? { ...maybeOptions, nativeKey: nativeKeyOrOptions }
+        : nativeKeyOrOptions;
 
     return {
-        nativeKey: context.name as string,
-        priority: nativeKeyOrOptions?.priority ?? 0
+        nativeKey: options?.nativeKey ?? (context.name as string),
+        priority: options?.priority ?? 0
     };
 }
 
